@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IMAR · Obleas y Dulces Artesanales</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --azul: #1B4F72;
+      --teal: #1A7A6E;
+      --dorado: #C9A84C;
+      --dorado-light: #F0D890;
+      --crema: #FDF8F0;
+      --blanco: #FFFFFF;
+      --gris: #6B7280;
+      --gris-claro: #F3F4F6;
+      --negro: #1A1A1A;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--blanco); color: var(--negro); }
+
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--azul);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%; height: 64px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    }
+    .nav-logo { font-family: 'Playfair Display', serif; color: var(--dorado); font-size: 1.5rem; font-weight: 700; letter-spacing: 0.05em; text-decoration: none; }
+    .nav-logo span { color: var(--blanco); font-size: 0.7rem; display: block; letter-spacing: 0.2em; font-family: 'Inter', sans-serif; font-weight: 300; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--dorado); }
+    .nav-cart { background: var(--dorado); color: var(--azul); border: none; padding: 8px 18px; border-radius: 20px; font-weight: 600; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: background 0.2s; }
+    .nav-cart:hover { background: var(--dorado-light); }
+    .cart-count { background: var(--azul); color: var(--dorado); border-radius: 50%; width: 18px; height: 18px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+
+    .hero { background: linear-gradient(135deg, var(--azul) 0%, var(--teal) 100%); padding: 80px 5% 60px; display: flex; align-items: center; justify-content: space-between; gap: 40px; min-height: 480px; }
+    .hero-text { flex: 1; max-width: 540px; }
+    .hero-eyebrow { color: var(--dorado); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 16px; }
+    .hero-title { font-family: 'Playfair Display', serif; color: var(--blanco); font-size: clamp(2rem, 4vw, 3rem); line-height: 1.15; margin-bottom: 20px; }
+    .hero-title em { color: var(--dorado); font-style: normal; }
+    .hero-sub { color: rgba(255,255,255,0.75); font-size: 1rem; line-height: 1.7; margin-bottom: 36px; }
+    .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-primary { background: var(--dorado); color: var(--azul); padding: 13px 28px; border-radius: 24px; font-weight: 700; font-size: 0.9rem; text-decoration: none; border: none; cursor: pointer; transition: background 0.2s; }
+    .btn-primary:hover { background: var(--dorado-light); }
+    .btn-outline { background: transparent; color: var(--blanco); padding: 13px 28px; border-radius: 24px; font-weight: 600; font-size: 0.9rem; text-decoration: none; border: 2px solid rgba(255,255,255,0.4); cursor: pointer; transition: border-color 0.2s; }
+    .btn-outline:hover { border-color: var(--dorado); color: var(--dorado); }
+    .hero-visual { flex: 1; max-width: 420px; display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+    .oblea-chip { width: 52px; height: 52px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.25); transition: transform 0.3s; cursor: pointer; }
+    .oblea-chip:hover { transform: scale(1.15); border-color: var(--dorado); }
+
+    .stats { background: var(--crema); display: flex; justify-content: center; border-bottom: 1px solid #E5D9C8; }
+    .stat { flex: 1; max-width: 220px; padding: 28px 20px; text-align: center; border-right: 1px solid #E5D9C8; }
+    .stat:last-child { border-right: none; }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--azul); font-weight: 700; }
+    .stat-label { font-size: 0.75rem; color: var(--gris); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 4px; }
+
+    .section { padding: 64px 5%; }
+    .section-alt { background: var(--crema); }
+    .section-header { text-align: center; margin-bottom: 48px; }
+    .section-eyebrow { color: var(--teal); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 10px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3vw, 2.2rem); color: var(--azul); margin-bottom: 12px; }
+    .section-sub { color: var(--gris); font-size: 0.95rem; line-height: 1.6; max-width: 520px; margin: 0 auto; }
+
+    .filters { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 40px; }
+    .filter-btn { padding: 8px 20px; border-radius: 20px; border: 1.5px solid var(--azul); background: transparent; color: var(--azul); font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .filter-btn.active, .filter-btn:hover { background: var(--azul); color: var(--blanco); }
+
+    .subfilters { display: none; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: -28px; margin-bottom: 32px; }
+    .subfilters.visible { display: flex; animation: fadeIn 0.2s ease; }
+    .subfil-btn { padding: 6px 16px; border-radius: 16px; border: 1.5px solid var(--teal); background: transparent; color: var(--teal); font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .subfil-btn::before { content: '↳ '; font-size: 0.7rem; opacity: 0.6; }
+    .subfil-btn.active, .subfil-btn:hover { background: var(--teal); color: var(--blanco); }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
+
+    .relleno-btn { padding: 9px 18px; border-radius: 20px; border: 1.5px solid var(--dorado); background: transparent; color: var(--azul); font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .relleno-btn.active, .relleno-btn:hover { background: var(--dorado); color: var(--azul); }
+
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 20px; }
+    .product-card { background: var(--blanco); border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; }
+    .product-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+    .product-img { width: 100%; height: 160px; background: var(--gris-claro); display: flex; align-items: center; justify-content: center; font-size: 2.8rem; }
+    .product-body { padding: 14px; flex: 1; display: flex; flex-direction: column; }
+    .product-category { font-size: 0.65rem; color: var(--teal); font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 5px; }
+    .product-name { font-family: 'Playfair Display', serif; font-size: 0.95rem; color: var(--negro); margin-bottom: 8px; line-height: 1.3; flex: 1; }
+    .product-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; }
+    .product-price { font-weight: 700; color: var(--azul); font-size: 1rem; }
+    .btn-add { background: var(--azul); color: var(--blanco); border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+    .btn-add:hover { background: var(--teal); }
+    .btn-color-picker { background: var(--dorado); color: var(--azul); border: none; padding: 6px 12px; border-radius: 14px; font-size: 0.73rem; font-weight: 700; cursor: pointer; }
+    .btn-color-picker:hover { background: var(--dorado-light); }
+
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--blanco); border-radius: 20px; padding: 32px; max-width: 540px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+    .modal-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--azul); margin-bottom: 6px; }
+    .modal-sub { font-size: 0.85rem; color: var(--gris); margin-bottom: 24px; }
+    .color-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 24px; }
+    .color-swatch { width: 100%; aspect-ratio: 1; border-radius: 8px; border: 2px solid transparent; cursor: pointer; transition: transform 0.15s, border-color 0.15s; position: relative; }
+    .color-swatch:hover { transform: scale(1.1); }
+    .color-swatch.selected { border-color: var(--azul); transform: scale(1.1); }
+    .color-swatch.selected::after { content: '✓'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; color: var(--azul); }
+    .color-name-display { text-align: center; font-weight: 600; color: var(--azul); margin-bottom: 20px; font-size: 0.9rem; min-height: 20px; }
+    .modal-footer { display: flex; gap: 12px; justify-content: flex-end; }
+    .btn-cancel { padding: 10px 22px; border-radius: 20px; border: 1.5px solid var(--gris); background: transparent; color: var(--gris); font-weight: 600; cursor: pointer; font-size: 0.85rem; }
+
+    .custom-section { background: linear-gradient(135deg, var(--azul), var(--teal)); color: var(--blanco); padding: 64px 5%; text-align: center; }
+    .custom-section .section-title { color: var(--blanco); }
+    .custom-section .section-sub { color: rgba(255,255,255,0.75); }
+    .upload-zone { border: 2px dashed rgba(255,255,255,0.4); border-radius: 16px; padding: 48px 32px; max-width: 480px; margin: 32px auto 0; cursor: pointer; transition: border-color 0.2s; }
+    .upload-zone:hover { border-color: var(--dorado); }
+    .upload-icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .upload-text { font-size: 0.9rem; color: rgba(255,255,255,0.8); line-height: 1.6; }
+
+    .eventos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+    .evento-card { background: var(--blanco); border-radius: 16px; padding: 24px; border-left: 4px solid var(--dorado); box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+    .evento-icon { font-size: 2rem; margin-bottom: 10px; }
+    .evento-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--azul); margin-bottom: 8px; }
+    .evento-desc { font-size: 0.82rem; color: var(--gris); line-height: 1.6; margin-bottom: 14px; }
+
+    .cart-sidebar { position: fixed; top: 0; right: -420px; width: 400px; max-width: 100vw; height: 100vh; background: var(--blanco); box-shadow: -4px 0 24px rgba(0,0,0,0.15); z-index: 300; display: flex; flex-direction: column; transition: right 0.3s ease; padding: 24px; }
+    .cart-sidebar.open { right: 0; }
+    .cart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--gris-claro); }
+    .cart-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--azul); }
+    .cart-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--gris); }
+    .cart-items { flex: 1; overflow-y: auto; }
+    .cart-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--gris-claro); align-items: center; }
+    .cart-item-img { width: 48px; height: 48px; border-radius: 8px; background: var(--gris-claro); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+    .cart-item-info { flex: 1; }
+    .cart-item-name { font-size: 0.82rem; font-weight: 600; color: var(--negro); }
+    .cart-item-detail { font-size: 0.72rem; color: var(--gris); margin-top: 2px; }
+    .cart-item-qty { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; }
+    .qty-btn { width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid var(--azul); background: transparent; color: var(--azul); font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .cart-item-price { font-weight: 700; color: var(--azul); font-size: 0.88rem; min-width: 56px; text-align: right; }
+    .cart-footer { padding-top: 16px; border-top: 1px solid var(--gris-claro); }
+    .cart-total { display: flex; justify-content: space-between; font-weight: 700; font-size: 1.1rem; color: var(--azul); margin-bottom: 16px; }
+    .btn-checkout { width: 100%; background: var(--teal); color: var(--blanco); border: none; padding: 14px; border-radius: 24px; font-weight: 700; font-size: 0.95rem; cursor: pointer; margin-bottom: 10px; }
+    .btn-checkout:hover { background: var(--azul); }
+    .btn-wa { width: 100%; background: #25D366; color: var(--blanco); border: none; padding: 12px; border-radius: 24px; font-weight: 600; font-size: 0.85rem; cursor: pointer; }
+    .cart-empty { text-align: center; padding: 40px 20px; color: var(--gris); }
+    .cart-empty-icon { font-size: 3rem; margin-bottom: 12px; }
+
+    .wa-float { position: fixed; bottom: 28px; right: 28px; width: 56px; height: 56px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(37,211,102,0.4); z-index: 150; text-decoration: none; font-size: 1.6rem; transition: transform 0.2s; }
+    .wa-float:hover { transform: scale(1.1); }
+
+    footer { background: var(--azul); color: rgba(255,255,255,0.7); padding: 40px 5% 24px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 32px; margin-bottom: 32px; }
+    .footer-brand p { font-size: 0.82rem; line-height: 1.7; max-width: 280px; }
+    .footer-col h4 { color: var(--dorado); font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 14px; }
+    .footer-col a { display: block; color: rgba(255,255,255,0.65); font-size: 0.82rem; margin-bottom: 8px; text-decoration: none; transition: color 0.2s; }
+    .footer-col a:hover { color: var(--dorado); }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; text-align: center; font-size: 0.75rem; }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hero { flex-direction: column; padding: 40px 5% 32px; min-height: auto; }
+      .hero-visual { max-width: 100%; }
+      .stats { flex-wrap: wrap; }
+      .stat { min-width: 45%; border-right: none; border-bottom: 1px solid #E5D9C8; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .color-grid { grid-template-columns: repeat(5, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">IMAR<span>Obleas y Dulces Artesanales</span></a>
+  <ul class="nav-links">
+    <li><a href="#catalogo">Catálogo</a></li>
+    <li><a href="#obleas-color">Colores</a></li>
+    <li><a href="#personalizadas">Personalizadas</a></li>
+    <li><a href="#eventos">Eventos</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <button class="nav-cart" onclick="toggleCart()">🛒 Carrito <span class="cart-count" id="cartCount">0</span></button>
+</nav>
+
+<section class="hero">
+  <div class="hero-text">
+    <p class="hero-eyebrow">Monterrey, Nuevo León · Hecho a mano</p>
+    <h1 class="hero-title">Obleas artesanales que <em>saben a tradición</em></h1>
+    <p class="hero-sub">Obleas, rollos de guayaba, garapiñados y más — elaborados con recetas familiares. Menudeo y mayoreo.</p>
+    <div class="hero-ctas">
+      <a href="#catalogo" class="btn-primary">Ver catálogo</a>
+      <a href="https://wa.me/528112345678?text=Hola%2C%20quiero%20hacer%20un%20pedido" class="btn-outline" target="_blank">💬 Pedir por WhatsApp</a>
+    </div>
+  </div>
+  <div class="hero-visual" id="heroColors"></div>
+</section>
+
+<div class="stats">
+  <div class="stat"><div class="stat-num">17</div><div class="stat-label">Colores de Oblea</div></div>
+  <div class="stat"><div class="stat-num">+90</div><div class="stat-label">Productos</div></div>
+  <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Artesanal</div></div>
+  <div class="stat"><div class="stat-num">MTY</div><div class="stat-label">Envíos locales</div></div>
+</div>
+
+<section class="section" id="catalogo">
+  <div class="section-header">
+    <p class="section-eyebrow">Lo que hacemos</p>
+    <h2 class="section-title">Catálogo IMAR</h2>
+    <p class="section-sub">Todos nuestros productos elaborados artesanalmente en Monterrey.</p>
+  </div>
+  <div class="filters" id="categoryFilters">
+    <button class="filter-btn active" onclick="filterProducts('all', this)">Todos</button>
+    <button class="filter-btn" onclick="filterProducts('obleas', this)">Obleas</button>
+    <button class="filter-btn" onclick="filterProducts('guayaba', this)">Rollo de Guayaba</button>
+    <button class="filter-btn" onclick="filterProducts('garapinados', this)">Garapiñados</button>
+    <button class="filter-btn" onclick="filterProducts('enchilados', this)">Enchilados</button>
+    <button class="filter-btn" onclick="filterProducts('tamarindo', this)">Tamarindo</button>
+    <button class="filter-btn" onclick="filterProducts('reposteria', this)">Repostería</button>
+    <button class="filter-btn" onclick="filterProducts('eventos', this)">Eventos</button>
+  </div>
+  <div class="subfilters" id="obleasSubfilters">
+    <button class="subfil-btn active" onclick="filterObleas('obleas_natural', this)">Natural</button>
+    <button class="subfil-btn" onclick="filterObleas('obleas_impresa', this)">Impresa</button>
+    <button class="subfil-btn" onclick="filterObleas('obleas_rellena', this)">Rellena</button>
+    <button class="subfil-btn" onclick="filterObleas('obleas_impresa_rellena', this)">Impresa + Rellena</button>
+    <button class="subfil-btn" onclick="filterObleas('obleas_eventos', this)">Eventos</button>
+  </div>
+  <div class="product-grid" id="productGrid"></div>
+</section>
+
+<section class="section section-alt" id="obleas-color">
+  <div class="section-header">
+    <p class="section-eyebrow">Especialidad de la casa</p>
+    <h2 class="section-title">Obleas en 17 Colores</h2>
+    <p class="section-sub">Elige el color perfecto para tu evento o recuerdo.</p>
+  </div>
+  <div class="color-grid" id="colorShowcase" style="max-width:600px;margin:0 auto 32px;"></div>
+  <div style="text-align:center">
+    <button class="btn-primary" onclick="openColorModal(null)">Elegir color para mi pedido</button>
+  </div>
+</section>
+
+<section class="custom-section" id="personalizadas">
+  <p class="section-eyebrow" style="color:var(--dorado-light)">Diseño único</p>
+  <h2 class="section-title">Obleas con tu diseño impreso</h2>
+  <p class="section-sub">Tu logo, foto o arte impreso en obleas comestibles para bodas, XV años, cumpleaños y más.</p>
+  <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
+    <div class="upload-icon">🎨</div>
+    <div class="upload-text"><strong style="color:#fff">Sube tu diseño aquí</strong><br>PNG, JPG o PDF · Máx. 10 MB<br><span style="color:rgba(255,255,255,0.5);font-size:0.78rem">O contáctanos por WhatsApp</span></div>
+    <input type="file" id="fileInput" style="display:none" accept=".png,.jpg,.jpeg,.pdf" onchange="handleUpload(this)" />
+  </div>
+</section>
+
+<section class="section" id="eventos">
+  <div class="section-header">
+    <p class="section-eyebrow">Para tu celebración</p>
+    <h2 class="section-title">Paquetes para Eventos</h2>
+    <p class="section-sub">Los dulces artesanales IMAR son el detalle que todos recuerdan.</p>
+  </div>
+  <div class="eventos-grid">
+    <div class="evento-card"><div class="evento-icon">💍</div><h3 class="evento-title">Bodas</h3><p class="evento-desc">Obleas personalizadas con nombres y fecha, rollos de guayaba en presentación especial, mesas de dulces completas.</p><button class="btn-primary" onclick="cotizarWA('boda')">Cotizar boda</button></div>
+    <div class="evento-card"><div class="evento-icon">🌟</div><h3 class="evento-title">XV Años</h3><p class="evento-desc">Dulces en los colores de tu fiesta, con tu foto impresa en oblea comestible. El detalle perfecto para cada mesa.</p><button class="btn-primary" onclick="cotizarWA('xv')">Cotizar XV años</button></div>
+    <div class="evento-card"><div class="evento-icon">🏢</div><h3 class="evento-title">Corporativo</h3><p class="evento-desc">Recuerdos con tu logo para eventos empresariales. Caja Empresarial desde $810. Pedidos mayoreo disponibles.</p><button class="btn-primary" onclick="cotizarWA('corporativo')">Cotizar evento</button></div>
+    <div class="evento-card"><div class="evento-icon">🎂</div><h3 class="evento-title">Cumpleaños</h3><p class="evento-desc">Cilindros, cruces y paquetes de obleas en el color que quieras. Desde 7 hasta 120 piezas, entrega en Monterrey.</p><button class="btn-primary" onclick="cotizarWA('cumpleanos')">Cotizar cumpleaños</button></div>
+  </div>
+</section>
+
+<footer id="contacto">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo" style="display:inline-block;margin-bottom:12px;">IMAR</a>
+      <p>Fábrica de Obleas y Dulces Artesanales. Elaboramos con pasión desde Monterrey, Nuevo León.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Catálogo</h4>
+      <a href="#catalogo">Obleas</a>
+      <a href="#catalogo">Rollo de Guayaba</a>
+      <a href="#catalogo">Garapiñados</a>
+      <a href="#catalogo">Enchilados</a>
+      <a href="#eventos">Eventos</a>
+    </div>
+    <div class="footer-col">
+      <h4>Contacto</h4>
+      <a href="https://wa.me/528112345678" target="_blank">💬 WhatsApp</a>
+      <a href="mailto:hola@imarobleas.com">✉️ hola@imarobleas.com</a>
+      <a href="#">📍 Monterrey, NL</a>
+    </div>
+  </div>
+  <div class="footer-bottom"><p>© 2025 IMAR · Obleas y Dulces Artesanales · Monterrey, NL · Hecho con 🤍 en México</p></div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/528112345678?text=Hola%2C%20me%20interesa%20un%20pedido%20de%20IMAR" target="_blank">💬</a>
+
+<div class="modal-overlay" id="colorModal">
+  <div class="modal">
+    <h3 class="modal-title" id="modalTitle">Elige el color de tu oblea</h3>
+    <p class="modal-sub">17 colores artesanales disponibles.</p>
+    <div class="color-grid" id="modalColorGrid"></div>
+    <div class="color-name-display" id="colorNameDisplay">— Selecciona un color —</div>
+    <div id="rellenoSection" style="display:none;margin-bottom:20px;">
+      <p style="font-size:0.85rem;color:var(--gris);margin-bottom:12px;">Elige el relleno:</p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        <button class="relleno-btn" onclick="selectRelleno('Tamarindo',this)">🌶️ Tamarindo</button>
+        <button class="relleno-btn" onclick="selectRelleno('Cajeta',this)">🍮 Cajeta</button>
+        <button class="relleno-btn" onclick="selectRelleno('Nutella',this)">🍫 Nutella</button>
+      </div>
+      <div style="text-align:center;font-weight:600;color:var(--azul);font-size:0.9rem;margin-top:12px;min-height:20px;" id="rellenoDisplay">— Selecciona un relleno —</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeColorModal()">Cancelar</button>
+      <button class="btn-primary" onclick="confirmColor()">Agregar al carrito</button>
+    </div>
+  </div>
+</div>
+
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <h3 class="cart-title">Tu pedido</h3>
+    <button class="cart-close" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty"><div class="cart-empty-icon">🛒</div><p>Tu carrito está vacío.</p></div>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-total"><span>Total</span><span id="cartTotal">$0.00</span></div>
+    <button class="btn-checkout" onclick="checkoutWA()">Confirmar pedido por WhatsApp</button>
+    <button class="btn-wa" onclick="checkoutWA()">💬 Enviar a WhatsApp</button>
+  </div>
+</div>
+
+<script>
+const COLORS = [
+  {name:'Blanco',hex:'#FFFFFF',border:'#ddd'},
+  {name:'Amarillo',hex:'#FDD835'},
+  {name:'Aqua',hex:'#00BCD4'},
+  {name:'Azul Claro',hex:'#64B5F6'},
+  {name:'Azul Marino',hex:'#1A237E'},
+  {name:'Café',hex:'#795548'},
+  {name:'Celeste',hex:'#B3E5FC'},
+  {name:'Fiusha',hex:'#E91E8C'},
+  {name:'Lila',hex:'#CE93D8'},
+  {name:'Melón',hex:'#FFAB76'},
+  {name:'Morado',hex:'#7B1FA2'},
+  {name:'Naranja',hex:'#FF6F00'},
+  {name:'Rojo',hex:'#D32F2F'},
+  {name:'Rosa Pastel',hex:'#F8BBD9'},
+  {name:'Verde Bandera',hex:'#2E7D32'},
+  {name:'Verde Limón',hex:'#CDDC39'},
+  {name:'Verde Menta',hex:'#A5D6A7'},
+];
+
+const PRODUCTS = [
+  // Obleas
+  // Obleas — Natural (paquetes sin modificar)
+  {id:1,name:'Oblea 4 cm (100pz)',cat:'obleas',subcat:'obleas_natural',emoji:'🪅',price:60,hasColor:true},
+  {id:2,name:'Oblea 5 cm (100pz)',cat:'obleas',subcat:'obleas_natural',emoji:'🪅',price:62,hasColor:true},
+  {id:3,name:'Oblea 6 cm 100pz',cat:'obleas',subcat:'obleas_natural',emoji:'🪅',price:75,hasColor:true},
+  {id:4,name:'Oblea 8 cm (100pz)',cat:'obleas',subcat:'obleas_natural',emoji:'🪅',price:125,hasColor:true},
+  {id:5,name:'Oblea 10 cm (100pz)',cat:'obleas',subcat:'obleas_natural',emoji:'🪅',price:165,hasColor:true},
+  {id:6,name:'Oblea 14 cm 12pz',cat:'obleas',subcat:'obleas_natural',emoji:'🪅',price:60,hasColor:true},
+  {id:7,name:'Oblea 21 cm (20pz)',cat:'obleas',subcat:'obleas_natural',emoji:'🪅',price:155,hasColor:true},
+  {id:18,name:'Hoja de Oblea (50pz)',cat:'obleas',subcat:'obleas_natural',emoji:'📄',price:315,hasColor:true},
+  {id:19,name:'Pieza de Hoja',cat:'obleas',subcat:'obleas_natural',emoji:'📄',price:11},
+  // Obleas — Impresa
+  {id:8,name:'Oblea 4 cm Impresa',cat:'obleas',subcat:'obleas_impresa',emoji:'🖨️',price:7,hasColor:true},
+  {id:9,name:'Oblea 5 cm Impresa',cat:'obleas',subcat:'obleas_impresa',emoji:'🖨️',price:8,hasColor:true},
+  {id:10,name:'Oblea 6 cm Impresa',cat:'obleas',subcat:'obleas_impresa',emoji:'🖨️',price:9,hasColor:true},
+  {id:11,name:'Oblea 8 cm Impresa',cat:'obleas',subcat:'obleas_impresa',emoji:'🖨️',price:12,hasColor:true},
+  {id:12,name:'Oblea 10 cm Impresa',cat:'obleas',subcat:'obleas_impresa',emoji:'🖨️',price:16,hasColor:true},
+  {id:13,name:'Oblea 21 cm Impresa',cat:'obleas',subcat:'obleas_impresa',emoji:'🖨️',price:35,hasColor:true},
+  // Obleas — Rellena
+  {id:14,name:'Oblea 4 cm Rellena',cat:'obleas',subcat:'obleas_rellena',emoji:'🍬',price:7.5,hasColor:true},
+  {id:15,name:'Oblea 5 cm Rellena',cat:'obleas',subcat:'obleas_rellena',emoji:'🍬',price:8.5,hasColor:true},
+  {id:16,name:'Oblea 10 cm Rellena',cat:'obleas',subcat:'obleas_rellena',emoji:'🍬',price:17,hasColor:true},
+  {id:17,name:'Oblea 21 cm Rellena',cat:'obleas',subcat:'obleas_rellena',emoji:'🍬',price:60,hasColor:true},
+  // Obleas — Impresa + Rellena
+  {id:30,name:'Oblea 4 cm Impresa+Rellena',cat:'obleas',subcat:'obleas_impresa_rellena',emoji:'🖨️🍬',price:25,hasColor:true},
+  {id:31,name:'Oblea 5 cm Impresa+Rellena',cat:'obleas',subcat:'obleas_impresa_rellena',emoji:'🖨️🍬',price:30,hasColor:true},
+  {id:32,name:'Oblea 6 cm Impresa+Rellena',cat:'obleas',subcat:'obleas_impresa_rellena',emoji:'🖨️🍬',price:35,hasColor:true},
+  {id:33,name:'Oblea 8 cm Impresa+Rellena',cat:'obleas',subcat:'obleas_impresa_rellena',emoji:'🖨️🍬',price:40,hasColor:true},
+  {id:34,name:'Oblea 10 cm Impresa+Rellena',cat:'obleas',subcat:'obleas_impresa_rellena',emoji:'🖨️🍬',price:50,hasColor:true},
+  {id:35,name:'Oblea 21 cm Impresa+Rellena',cat:'obleas',subcat:'obleas_impresa_rellena',emoji:'🖨️🍬',price:80,hasColor:true},
+  // Obleas — otros
+  {id:20,name:'Confetti Oblea 500g MIX — Tamarindo',cat:'obleas',subcat:'obleas_rellena',emoji:'🎊',price:210},
+  {id:21,name:'Confetti de Oblea KG 1 COLOR — Tamarindo',cat:'obleas',subcat:'obleas_rellena',emoji:'🎊',price:390,hasColor:true,rellenoFijo:'Tamarindo'},
+  {id:22,name:'Confetti de Oblea KG MIX — Tamarindo',cat:'obleas',subcat:'obleas_rellena',emoji:'🎊',price:370},
+  {id:23,name:'Barritas de Oblea',cat:'obleas',subcat:'obleas_natural',emoji:'🍫',price:70},
+  {id:24,name:'Paleta Oblea Conejo',cat:'obleas',subcat:'obleas_natural',emoji:'🐰',price:45},
+  {id:25,name:'Recorte Oblea',cat:'obleas',subcat:'obleas_natural',emoji:'✂️',price:10},
+  // Rollo de Guayaba
+  {id:26,name:'Mini Rollito de Guayaba',cat:'guayaba',emoji:'🍬',price:45},
+  {id:27,name:'Rollito de Guayaba 130gr',cat:'guayaba',emoji:'🍬',price:85},
+  {id:28,name:'Rollito Guayarindo 130gr',cat:'guayaba',emoji:'🍬',price:85},
+  {id:29,name:'Rollito de Guayaba/Cajeta 130gr',cat:'guayaba',emoji:'🍬',price:85},
+  {id:30,name:'Rollo de Guayaba Mediano',cat:'guayaba',emoji:'🍬',price:250},
+  {id:31,name:'Rollo de Guayaba Grande',cat:'guayaba',emoji:'🍬',price:490},
+  {id:32,name:'Guayarindo',cat:'guayaba',emoji:'🍬',price:190},
+  {id:33,name:'Corazones Guayaba',cat:'guayaba',emoji:'❤️',price:60},
+  {id:34,name:'Mega Mix Nuez',cat:'guayaba',emoji:'🥜',price:330},
+  {id:35,name:'Mini Rollitos',cat:'guayaba',emoji:'🍬',price:85},
+  {id:36,name:'Caja Mix',cat:'guayaba',emoji:'📦',price:150},
+  // Garapiñados
+  {id:37,name:'Cacahuate Garapiñado',cat:'garapinados',emoji:'🥜',price:35},
+  {id:38,name:'Nuez Garapiñada',cat:'garapinados',emoji:'🥜',price:50},
+  {id:39,name:'Nuez Natural',cat:'garapinados',emoji:'🥜',price:180},
+  {id:40,name:'Miel de Abeja',cat:'garapinados',emoji:'🍯',price:90},
+  // Enchilados
+  {id:41,name:'Mango Enchilado KG',cat:'enchilados',emoji:'🌶️',price:380},
+  {id:42,name:'Arandanos Enchilados KG',cat:'enchilados',emoji:'🌶️',price:320},
+  {id:43,name:'Piña Enchilada KG',cat:'enchilados',emoji:'🌶️',price:380},
+  {id:44,name:'Mix Enchilado',cat:'enchilados',emoji:'🌶️',price:260},
+  {id:45,name:'Guayabitas Enchiladas',cat:'enchilados',emoji:'🌶️',price:35},
+  {id:46,name:'Panditas Enchilados',cat:'enchilados',emoji:'🌶️',price:50},
+  {id:47,name:'Charola Fruta Enchilada',cat:'enchilados',emoji:'🍽️',price:130},
+  // Tamarindo
+  {id:49,name:'Chamoy 250ml',cat:'tamarindo',emoji:'🍶',price:120},
+  {id:50,name:'Pulpa de Tamarindo',cat:'tamarindo',emoji:'🟤',price:40},
+  {id:51,name:'TAMARINDO',cat:'tamarindo',emoji:'🟤',price:150},
+  // Repostería
+  {id:52,name:'Empanadas',cat:'reposteria',emoji:'🥐',price:17},
+  {id:53,name:'Bolsas (Empanadas/Hojarascas)',cat:'reposteria',emoji:'🛍️',price:60},
+  {id:72,name:'Bolsa Confetti 50g',cat:'obleas',subcat:'obleas_eventos',emoji:'🎊',price:50,hasColor:true},
+  // Eventos
+  {id:54,name:'Angel Oblea',cat:'eventos',subcat:'obleas_eventos',emoji:'👼',price:50},
+  {id:55,name:'Bolsa Obleas y Sobre Nutella',cat:'eventos',subcat:'obleas_eventos',emoji:'🍫',price:65},
+  {id:56,name:'Caja 7 Obleas Rellenas + Tamarindo',cat:'eventos',subcat:'obleas_eventos',emoji:'📦',price:85},
+  {id:57,name:'Caja 15 Obleas Tamarindo',cat:'eventos',subcat:'obleas_eventos',emoji:'📦',price:85},
+  {id:58,name:'Caja 8x8 Confetti',cat:'eventos',subcat:'obleas_eventos',emoji:'📦',price:70,hasColor:true},
+  {id:59,name:'Caja Obleas 4cms 5x5',cat:'eventos',subcat:'obleas_eventos',emoji:'📦',price:60},
+  {id:60,name:'Caja de Obleas con Nutella',cat:'eventos',subcat:'obleas_eventos',emoji:'📦',price:95},
+  {id:61,name:'Cilindro 7 Obleas',cat:'eventos',subcat:'obleas_eventos',emoji:'🎁',price:60},
+  {id:62,name:'Cilindro 13 Obleas',cat:'eventos',subcat:'obleas_eventos',emoji:'🎁',price:85},
+  {id:63,name:'Cruz 120 Obleas',cat:'eventos',subcat:'obleas_eventos',emoji:'✝️',price:90},
+  {id:64,name:'Cruz Confetti',cat:'eventos',emoji:'✝️',price:95},
+  {id:65,name:'Cruz Guayarindo',cat:'eventos',emoji:'✝️',price:110},
+  {id:66,name:'Cruz Rollo de Guayaba',cat:'eventos',emoji:'✝️',price:145},
+  {id:67,name:'Cruz con 37 Obleas',cat:'eventos',subcat:'obleas_eventos',emoji:'✝️',price:160},
+  {id:68,name:'Cruz con Lucas',cat:'eventos',subcat:'obleas_eventos',emoji:'✝️',price:95},
+  {id:69,name:'Cruz con Nutella',cat:'eventos',subcat:'obleas_eventos',emoji:'✝️',price:160},
+  {id:70,name:'Caja Empresarial',cat:'eventos',emoji:'🏢',price:810},
+  {id:71,name:'Paquete 10 Obleas rellenas 5 cm',cat:'eventos',subcat:'obleas_eventos',emoji:'📦',price:70},
+];
+
+let cart = [];
+let selectedColor = null;
+let selectedRelleno = null;
+let pendingProduct = null;
+
+function renderHeroColors() {
+  const c = document.getElementById('heroColors');
+  COLORS.forEach(col => {
+    const d = document.createElement('div');
+    d.className = 'oblea-chip';
+    d.style.background = col.hex;
+    if(col.border) d.style.borderColor = col.border;
+    d.title = col.name;
+    d.onclick = () => openColorModal(null);
+    c.appendChild(d);
+  });
+}
+
+function renderColorShowcase() {
+  const c = document.getElementById('colorShowcase');
+  COLORS.forEach(col => {
+    const d = document.createElement('div');
+    d.className = 'color-swatch';
+    d.style.background = col.hex;
+    if(col.border) d.style.border = '2px solid '+col.border;
+    d.title = col.name;
+    c.appendChild(d);
+  });
+}
+
+function catLabel(cat) {
+  const m = {obleas:'Obleas',guayaba:'Rollo de Guayaba',garapinados:'Garapiñados',enchilados:'Enchilados',confetti:'Confetti',tamarindo:'Tamarindo',reposteria:'Repostería',eventos:'Eventos'};
+  return m[cat]||cat;
+}
+
+function renderProducts(filter='all', subcat=null) {
+  const g = document.getElementById('productGrid');
+  let list;
+  if(filter==='all') list = PRODUCTS;
+  else if(subcat) list = PRODUCTS.filter(p=>p.subcat===subcat);
+  else list = PRODUCTS.filter(p=>p.cat===filter);
+  g.innerHTML = list.map(p=>`
+    <div class="product-card">
+      <div class="product-img">${p.emoji}</div>
+      <div class="product-body">
+        <div class="product-category">${catLabel(p.cat)}</div>
+        <h3 class="product-name">${p.name}</h3>
+        <div class="product-footer">
+          <div class="product-price">$${p.price.toFixed(2)}</div>
+          ${p.hasColor
+            ? `<button class="btn-color-picker" onclick="openColorModal(${p.id})">🎨 Color</button>`
+            : `<button class="btn-add" onclick="addToCart(${p.id},null)">+</button>`}
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function filterProducts(cat,btn) {
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const sub = document.getElementById('obleasSubfilters');
+  if(cat==='obleas') {
+    sub.classList.add('visible');
+    // activar subfiltro Natural por defecto
+    document.querySelectorAll('.subfil-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelector('.subfil-btn').classList.add('active');
+    renderProducts('obleas','obleas_natural');
+  } else {
+    sub.classList.remove('visible');
+    renderProducts(cat);
+  }
+}
+
+function filterObleas(subcat, btn) {
+  document.querySelectorAll('.subfil-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderProducts('obleas', subcat);
+}
+
+function openColorModal(pid) {
+  pendingProduct = pid;
+  selectedColor = null;
+  selectedRelleno = null;
+  document.getElementById('colorNameDisplay').textContent='— Selecciona un color —';
+  document.getElementById('rellenoDisplay').textContent='— Selecciona un relleno —';
+  document.querySelectorAll('.relleno-btn').forEach(b=>b.classList.remove('active'));
+  const g = document.getElementById('modalColorGrid');
+  g.innerHTML = COLORS.map((c,i)=>`<div class="color-swatch" style="background:${c.hex}${c.border?';border:2px solid '+c.border:''}" title="${c.name}" onclick="selectColor(${i})"></div>`).join('');
+  // Mostrar sección relleno solo si aplica
+  const p = PRODUCTS.find(x=>x.id===pid);
+  const esRellena = p && (p.subcat==='obleas_rellena' || p.subcat==='obleas_impresa_rellena' || p.subcat==='obleas_eventos') && !p.rellenoFijo;
+  document.getElementById('rellenoSection').style.display = esRellena ? 'block' : 'none';
+  document.getElementById('modalTitle').textContent = esRellena ? 'Elige color y relleno' : 'Elige el color de tu oblea';
+  document.getElementById('colorModal').classList.add('open');
+}
+
+function selectColor(i) {
+  selectedColor = COLORS[i];
+  document.querySelectorAll('#modalColorGrid .color-swatch').forEach((s,j)=>s.classList.toggle('selected',j===i));
+  document.getElementById('colorNameDisplay').textContent='Color: '+selectedColor.name;
+}
+
+function selectRelleno(r, btn) {
+  selectedRelleno = r;
+  document.querySelectorAll('.relleno-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('rellenoDisplay').textContent='Relleno: '+r;
+}
+
+function closeColorModal() { document.getElementById('colorModal').classList.remove('open'); }
+
+function confirmColor() {
+  if(!selectedColor){alert('Elige un color'); return;}
+  const p = PRODUCTS.find(x=>x.id===pendingProduct);
+  const esRellena = p && (p.subcat==='obleas_rellena' || p.subcat==='obleas_impresa_rellena' || p.subcat==='obleas_eventos') && !p.rellenoFijo;
+  if(esRellena && !selectedRelleno){alert('Elige un relleno'); return;}
+  const relleno = p.rellenoFijo || selectedRelleno || null;
+  addToCart(pendingProduct, selectedColor, relleno);
+  closeColorModal();
+}
+
+function addToCart(pid, color, relleno=null) {
+  const p = PRODUCTS.find(x=>x.id===pid); if(!p) return;
+  const key = pid+'-'+(color?color.name:'default')+'-'+(relleno||'');
+  const ex = cart.find(i=>i.key===key);
+  if(ex) ex.qty++; else cart.push({key,product:p,color,relleno,qty:1});
+  renderCart(); openCart();
+}
+
+function renderCart() {
+  const cnt = cart.reduce((s,i)=>s+i.qty,0);
+  document.getElementById('cartCount').textContent=cnt;
+  const c = document.getElementById('cartItems');
+  const f = document.getElementById('cartFooter');
+  if(!cart.length){c.innerHTML='<div class="cart-empty"><div class="cart-empty-icon">🛒</div><p>Tu carrito está vacío.</p></div>';f.style.display='none';return;}
+  c.innerHTML=cart.map(item=>`<div class="cart-item"><div class="cart-item-img">${item.product.emoji}</div><div class="cart-item-info"><div class="cart-item-name">${item.product.name}</div><div class="cart-item-detail" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">${item.color?`<span style="display:flex;align-items:center;gap:3px"><span style="width:10px;height:10px;border-radius:50%;background:${item.color.hex};display:inline-block;border:1px solid #ddd"></span>${item.color.name}</span>`:''}${item.relleno?`<span>· 🍬 ${item.relleno}</span>`:''}</div></div><div class="cart-item-qty"><button class="qty-btn" onclick="changeQty('${item.key}',-1)">−</button><span>${item.qty}</span><button class="qty-btn" onclick="changeQty('${item.key}',1)">+</button></div><div class="cart-item-price">$${(item.product.price*item.qty).toFixed(2)}</div></div>`).join('');
+  const total=cart.reduce((s,i)=>s+i.product.price*i.qty,0);
+  document.getElementById('cartTotal').textContent='$'+total.toFixed(2)+' MXN';
+  f.style.display='block';
+}
+
+function changeQty(key,d){const i=cart.findIndex(x=>x.key===key);if(i<0)return;cart[i].qty+=d;if(cart[i].qty<=0)cart.splice(i,1);renderCart();}
+function toggleCart(){document.getElementById('cartSidebar').classList.toggle('open');}
+function openCart(){document.getElementById('cartSidebar').classList.add('open');}
+
+function checkoutWA(){
+  if(!cart.length)return;
+  const lines=cart.map(i=>`• ${i.product.name}${i.color?' ('+i.color.name+')':''}${i.relleno?' - Relleno: '+i.relleno:''} x${i.qty} = $${(i.product.price*i.qty).toFixed(2)}`).join('\n');
+  const total=cart.reduce((s,i)=>s+i.product.price*i.qty,0);
+  const msg=encodeURIComponent(`Hola IMAR! Quiero hacer el siguiente pedido:\n\n${lines}\n\nTotal: $${total.toFixed(2)} MXN\n\n¿Me pueden confirmar disponibilidad?`);
+  window.open('https://wa.me/528112345678?text='+msg,'_blank');
+}
+
+function cotizarWA(t){const m={boda:'Hola IMAR! Me interesa cotizar para boda.',xv:'Hola IMAR! Me interesa cotizar para XV años.',corporativo:'Hola IMAR! Me interesa un pedido corporativo.',cumpleanos:'Hola IMAR! Me interesa cotizar para cumpleaños.'};window.open('https://wa.me/528112345678?text='+encodeURIComponent(m[t]),'_blank');}
+
+function handleUpload(input){if(input.files&&input.files[0]){const n=input.files[0].name;alert('✅ Archivo "'+n+'" listo. Te redirigiremos a WhatsApp.');window.open('https://wa.me/528112345678?text='+encodeURIComponent('Hola IMAR! Quiero obleas con diseño personalizado. Archivo: '+n),'_blank');}}
+
+renderHeroColors();
+renderColorShowcase();
+renderProducts();
+renderCart();
+document.getElementById('colorModal').addEventListener('click',function(e){if(e.target===this)closeColorModal();});
+</script>
+</body>
+</html>
