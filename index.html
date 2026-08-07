@@ -96,6 +96,20 @@
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
     .modal-overlay.open { display: flex; }
     .modal { background: var(--blanco); border-radius: 20px; padding: 32px; max-width: 540px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+    .lightbox-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 300; align-items: center; justify-content: center; padding: 24px; cursor: zoom-out; }
+    .lightbox-overlay.open { display: flex; }
+    .lightbox-overlay img { max-width: 90vw; max-height: 85vh; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+    .lightbox-close { position: absolute; top: 20px; right: 24px; color: #fff; font-size: 2rem; cursor: pointer; background: none; border: none; line-height: 1; }
+    .product-img { position: relative; }
+    .product-img.has-photo { cursor: zoom-in; }
+    .photo-count { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.65); color: #fff; font-size: 0.7rem; padding: 3px 8px; border-radius: 10px; }
+    .lightbox-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.15); border: none; color: #fff; font-size: 1.8rem; width: 48px; height: 48px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .lightbox-arrow:hover { background: rgba(255,255,255,0.3); }
+    .lightbox-arrow.prev { left: 16px; }
+    .lightbox-arrow.next { right: 16px; }
+    .lightbox-dots { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; }
+    .lightbox-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.4); cursor: pointer; border: none; padding: 0; }
+    .lightbox-dot.active { background: #fff; }
     .modal-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--azul); margin-bottom: 6px; }
     .modal-sub { font-size: 0.85rem; color: var(--gris); margin-bottom: 24px; }
     .color-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 24px; }
@@ -311,6 +325,14 @@
   </div>
 </div>
 
+<div class="lightbox-overlay" id="lightboxOverlay" onclick="if(event.target===this)closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+  <button class="lightbox-arrow prev" id="lightboxPrev" onclick="event.stopPropagation();lightboxNav(-1)">‹</button>
+  <img id="lightboxImg" src="" alt="">
+  <button class="lightbox-arrow next" id="lightboxNext" onclick="event.stopPropagation();lightboxNav(1)">›</button>
+  <div class="lightbox-dots" id="lightboxDots"></div>
+</div>
+
 <div class="cart-sidebar" id="cartSidebar">
   <div class="cart-header">
     <h3 class="cart-title">Tu pedido</h3>
@@ -350,10 +372,10 @@ const COLORS = [
 const PRODUCTS = [
   // Obleas
   // Obleas — Natural (paquetes sin modificar)
-  {id:1,name:'Oblea 4 cm (100pz)',cat:'obleas',subcat:'obleas_natural',emoji:'🪅',img:'Oblea_4cm_5cm_8cm_10cm.png',price:60,hasColor:true},
-  {id:2,name:'Oblea 5 cm (100pz)',cat:'obleas',subcat:'obleas_natural',emoji:'🪅',img:'Oblea_4cm_5cm_8cm_10cm.png',price:62,hasColor:true},
+  {id:1,name:'Oblea 4 cm (100pz)',cat:'obleas',subcat:'obleas_natural',emoji:'🪅',img:'Obleas4cm.png',price:60,hasColor:true},
+  {id:2,name:'Oblea 5 cm (100pz)',cat:'obleas',subcat:'obleas_natural',emoji:'🪅',img:'Obleas5cm.png',price:62,hasColor:true},
   {id:3,name:'Oblea 6 cm 100pz',cat:'obleas',subcat:'obleas_natural',emoji:'🪅',price:75,hasColor:true},
-  {id:4,name:'Oblea 8 cm (100pz)',cat:'obleas',subcat:'obleas_natural',emoji:'🪅',img:'Oblea_4cm_5cm_8cm_10cm.png',price:125,hasColor:true},
+  {id:4,name:'Oblea 8 cm (100pz)',cat:'obleas',subcat:'obleas_natural',emoji:'🪅',img:'Obleas8cm.png',price:125,hasColor:true},
   {id:5,name:'Oblea 10 cm (100pz)',cat:'obleas',subcat:'obleas_natural',emoji:'🪅',img:'Oblea_10cm.png',price:165,hasColor:true},
   {id:6,name:'Oblea 14 cm 12pz',cat:'obleas',subcat:'obleas_natural',emoji:'🪅',price:60,hasColor:true},
   {id:7,name:'Oblea 21 cm (20pz)',cat:'obleas',subcat:'obleas_natural',emoji:'🪅',price:155,hasColor:true},
@@ -392,7 +414,7 @@ const PRODUCTS = [
   {id:73,name:'Guayarindo',cat:'guayaba',emoji:'🍬',img:'web guayarindo.png',price:190},
   {id:74,name:'Corazones Guayaba',cat:'guayaba',emoji:'❤️',img:'Corazones_Guayaba.png',price:60},
   {id:75,name:'Mega Mix Nuez',cat:'guayaba',emoji:'🥜',img:'web-megamix.png',price:330},
-  {id:76,name:'Mini Rollitos',cat:'guayaba',emoji:'🍬',img:'web mini rollitos.png',price:85},
+  {id:76,name:'Mini Rollitos',cat:'guayaba',emoji:'🍬',images:['web mini rollitos.png','web-Mini Rollitos.png'],price:85},
   {id:36,name:'Caja Mix',cat:'guayaba',emoji:'📦',img:'web-cajamix.png',price:150},
   // Garapiñados
   {id:85,name:'Tortugas 6pz',cat:'garapinados',emoji:'🐢',img:'Tortugas.png',price:130},
@@ -400,7 +422,7 @@ const PRODUCTS = [
   {id:37,name:'Cacahuate Garapiñado',cat:'garapinados',emoji:'🥜',img:'Cacahuate_Garapi.png',price:35},
   {id:38,name:'Nuez Garapiñada',cat:'garapinados',emoji:'🥜',img:'Nuez_Garapi.png',price:50},
   {id:39,name:'Nuez Natural',cat:'garapinados',emoji:'🥜',price:180},
-  {id:40,name:'Miel de Abeja',cat:'garapinados',emoji:'🍯',price:90},
+  {id:40,name:'Miel de Abeja',cat:'garapinados',emoji:'🍯',img:'Miel_Abeja.png',price:90},
   // Enchilados
   {id:41,name:'Mango Enchilado KG',cat:'enchilados',emoji:'🌶️',price:380},
   {id:42,name:'Arandanos Enchilados KG',cat:'enchilados',emoji:'🌶️',price:320},
@@ -410,40 +432,40 @@ const PRODUCTS = [
   {id:87,name:'Guayabitas Enchiladas KG',cat:'enchilados',emoji:'🌶️',img:'Guayabitas.png',price:350},
   {id:46,name:'Panditas Enchilados',cat:'enchilados',emoji:'🌶️',price:50},
   {id:47,name:'Charola Fruta Enchilada Grande',cat:'enchilados',emoji:'🍽️',img:'CharolaGrande.png',price:250},
-  {id:89,name:'Charola Fruta Enchilada Chica',cat:'enchilados',emoji:'🍽️',price:130},
+  {id:89,name:'Charola Fruta Enchilada Chica',cat:'enchilados',emoji:'🍽️',img:'Charola_Chica.png',price:130},
   // Tamarindo
   {id:49,name:'Chamoy 250ml',cat:'tamarindo',emoji:'🍶',price:120},
-  {id:50,name:'Pulpa de Tamarindo',cat:'tamarindo',emoji:'🟤',price:40},
+  {id:50,name:'Pulpa de Tamarindo',cat:'tamarindo',emoji:'🟤',img:'Pulpa_Tamarindo.png',price:40},
   {id:51,name:'TAMARINDO',cat:'tamarindo',emoji:'🟤',price:150},
   // Repostería
   {id:77,name:'Empanada Super Rellena de Cajeta y Nuez',cat:'reposteria',emoji:'🥐',img:'Empanada_SuperRellena.png',price:17},
   {id:78,name:'Empanada de Cajeta',cat:'reposteria',emoji:'🥐',img:'Empanadas_Surtidas.png',price:17},
   {id:79,name:'Empanada de Piña',cat:'reposteria',emoji:'🥐',img:'Empanadas_VARIAS.png',price:17},
   {id:80,name:'Empanada de Guayaba',cat:'reposteria',emoji:'🥐',price:17},
-  {id:81,name:'Bolsa Empanadas Chicas - Cajeta',cat:'reposteria',emoji:'🛍️',price:60},
-  {id:82,name:'Bolsa Empanadas Chicas - Piña',cat:'reposteria',emoji:'🛍️',price:60},
-  {id:83,name:'Bolsa Empanadas Chicas - Guayaba',cat:'reposteria',emoji:'🛍️',price:60},
+  {id:81,name:'Bolsa Empanadas Chicas - Cajeta',cat:'reposteria',emoji:'🛍️',img:'Bolsa_Empanadas_Cajeta.png',price:60},
+  {id:82,name:'Bolsa Empanadas Chicas - Piña',cat:'reposteria',emoji:'🛍️',img:'Bolsa_Empanadas_Pin_a.png',price:60},
+  {id:83,name:'Bolsa Empanadas Chicas - Guayaba',cat:'reposteria',emoji:'🛍️',img:'Bolsa_Empanadas_Guayaba.png',price:60},
   {id:84,name:'Bolsa de Hojarascas',cat:'reposteria',emoji:'🛍️',img:'Hojarazcas.png',price:60},
   {id:72,name:'Bolsa Confetti 50g',cat:'obleas',subcat:'obleas_eventos',emoji:'🎊',price:50,hasColor:true},
   // Eventos
   {id:54,name:'Angel Oblea',cat:'eventos',subcat:'obleas_eventos',emoji:'👼',img:'Angel_Oblea.png',price:50},
-  {id:55,name:'Bolsa Obleas y Sobre Nutella',cat:'eventos',subcat:'obleas_eventos',emoji:'🍫',price:65},
-  {id:56,name:'Caja 7 Obleas Rellenas + Tamarindo',cat:'eventos',subcat:'obleas_eventos',emoji:'📦',price:85},
+  {id:55,name:'Bolsa Obleas y Sobre Nutella',cat:'eventos',subcat:'obleas_eventos',emoji:'🍫',img:'Bolsa_Obleas_Nutella.png',price:65},
+  {id:56,name:'Caja 7 Obleas Rellenas + Tamarindo',cat:'eventos',subcat:'obleas_eventos',emoji:'📦',img:'Obleas_con_Pulpa.png',price:85},
   {id:57,name:'Caja 15 Obleas Tamarindo',cat:'eventos',subcat:'obleas_eventos',emoji:'📦',price:85},
   {id:58,name:'Caja 8x8 Confetti',cat:'eventos',subcat:'obleas_eventos',emoji:'📦',img:'Caja_Confetti.png',price:70,hasColor:true},
   {id:59,name:'Caja Obleas 4cms 5x5',cat:'eventos',subcat:'obleas_eventos',emoji:'📦',img:'CajaCubo.png',price:60},
   {id:60,name:'Caja de Obleas con Nutella',cat:'eventos',subcat:'obleas_eventos',emoji:'📦',price:95},
-  {id:61,name:'Cilindro 7 Obleas',cat:'eventos',subcat:'obleas_eventos',emoji:'🎁',price:60},
+  {id:61,name:'Cilindro 7 Obleas',cat:'eventos',subcat:'obleas_eventos',emoji:'🎁',img:'Cilindro_Chico.png',price:60},
   {id:62,name:'Cilindro 13 Obleas',cat:'eventos',subcat:'obleas_eventos',emoji:'🎁',img:'CilindroGrande.png',price:85},
   {id:63,name:'Cruz 120 Obleas',cat:'eventos',subcat:'obleas_eventos',emoji:'✝️',price:90},
   {id:64,name:'Cruz Confetti',cat:'eventos',emoji:'✝️',img:'web cruz confetti.png',price:95},
-  {id:65,name:'Cruz Guayarindo',cat:'eventos',emoji:'✝️',price:110},
+  {id:91,name:'Cruz Salada',cat:'eventos',emoji:'✝️',img:'Cruz_Enchilada.png',price:110},
   {id:66,name:'Cruz Rollo de Guayaba',cat:'eventos',emoji:'✝️',price:145},
   {id:67,name:'Cruz con 37 Obleas',cat:'eventos',subcat:'obleas_eventos',emoji:'✝️',img:'web cruz 37 obleas.png',price:160},
   {id:68,name:'Cruz con Lucas',cat:'eventos',subcat:'obleas_eventos',emoji:'✝️',img:'web cruz lucas.png',price:95},
   {id:69,name:'Cruz con Nutella',cat:'eventos',subcat:'obleas_eventos',emoji:'✝️',img:'web cruz nutella.png',price:160},
   {id:70,name:'Caja Empresarial',cat:'eventos',emoji:'🏢',price:810},
-  {id:71,name:'Paquete 10 Obleas rellenas 5 cm',cat:'eventos',subcat:'obleas_eventos',emoji:'📦',img:'Bolsa_Obleas_5cm.png',price:70},
+  {id:71,name:'Paquete 10 Obleas rellenas 5 cm',cat:'eventos',subcat:'obleas_eventos',emoji:'📦',images:['Bolsa_Obleas_5cm.png','Bolsa_Obleas_5cm_v2.png'],price:70},
 ];
 
 let cart = [];
@@ -481,15 +503,24 @@ function catLabel(cat) {
   return m[cat]||cat;
 }
 
+function getPhotos(p) {
+  if (p.images && p.images.length) return p.images;
+  if (p.img) return [p.img];
+  return [];
+}
+
 function renderProducts(filter='all', subcat=null) {
   const g = document.getElementById('productGrid');
   let list;
   if(filter==='all') list = PRODUCTS;
   else if(subcat) list = PRODUCTS.filter(p=>p.subcat===subcat);
   else list = PRODUCTS.filter(p=>p.cat===filter);
-  g.innerHTML = list.map(p=>`
+  g.innerHTML = list.map(p=>{
+    const photos = getPhotos(p);
+    const argsAttr = JSON.stringify([photos, 0, p.name]).replace(/"/g,'&quot;');
+    return `
     <div class="product-card">
-      <div class="product-img">${p.img ? `<img src="${p.img}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;">` : p.emoji}</div>
+      <div class="product-img ${photos.length ? 'has-photo' : ''}" ${photos.length ? `onclick="openLightboxArgs(${argsAttr})"` : ''}>${photos.length ? `<img src="${photos[0]}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;">${photos.length>1?`<div class="photo-count">📷 ${photos.length}</div>`:''}` : p.emoji}</div>
       <div class="product-body">
         <div class="product-category">${catLabel(p.cat)}</div>
         <h3 class="product-name">${p.name}</h3>
@@ -500,7 +531,7 @@ function renderProducts(filter='all', subcat=null) {
             : `<button class="btn-add" onclick="addToCart(${p.id},null)">+</button>`}
         </div>
       </div>
-    </div>`).join('');
+    </div>`;}).join('');
 }
 
 function filterProducts(cat,btn) {
@@ -581,7 +612,7 @@ function renderCart() {
   const c = document.getElementById('cartItems');
   const f = document.getElementById('cartFooter');
   if(!cart.length){c.innerHTML='<div class="cart-empty"><div class="cart-empty-icon">🛒</div><p>Tu carrito está vacío.</p></div>';f.style.display='none';return;}
-  c.innerHTML=cart.map(item=>`<div class="cart-item"><div class="cart-item-img">${item.product.emoji}</div><div class="cart-item-info"><div class="cart-item-name">${item.product.name}</div><div class="cart-item-detail" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">${item.color?`<span style="display:flex;align-items:center;gap:3px"><span style="width:10px;height:10px;border-radius:50%;background:${item.color.hex};display:inline-block;border:1px solid #ddd"></span>${item.color.name}</span>`:''}${item.relleno?`<span>· 🍬 ${item.relleno}</span>`:''}</div></div><div class="cart-item-qty"><button class="qty-btn" onclick="changeQty('${item.key}',-1)">−</button><span>${item.qty}</span><button class="qty-btn" onclick="changeQty('${item.key}',1)">+</button></div><div class="cart-item-price">$${(item.product.price*item.qty).toFixed(2)}</div></div>`).join('');
+  c.innerHTML=cart.map(item=>{const ph=getPhotos(item.product);return `<div class="cart-item"><div class="cart-item-img">${ph.length ? `<img src="${ph[0]}" alt="${item.product.name}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">` : item.product.emoji}</div><div class="cart-item-info"><div class="cart-item-name">${item.product.name}</div><div class="cart-item-detail" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">${item.color?`<span style="display:flex;align-items:center;gap:3px"><span style="width:10px;height:10px;border-radius:50%;background:${item.color.hex};display:inline-block;border:1px solid #ddd"></span>${item.color.name}</span>`:''}${item.relleno?`<span>· 🍬 ${item.relleno}</span>`:''}</div></div><div class="cart-item-qty"><button class="qty-btn" onclick="changeQty('${item.key}',-1)">−</button><span>${item.qty}</span><button class="qty-btn" onclick="changeQty('${item.key}',1)">+</button></div><div class="cart-item-price">$${(item.product.price*item.qty).toFixed(2)}</div></div>`;}).join('');
   const total=cart.reduce((s,i)=>s+i.product.price*i.qty,0);
   document.getElementById('cartTotal').textContent='$'+total.toFixed(2)+' MXN';
   f.style.display='block';
@@ -590,6 +621,44 @@ function renderCart() {
 function changeQty(key,d){const i=cart.findIndex(x=>x.key===key);if(i<0)return;cart[i].qty+=d;if(cart[i].qty<=0)cart.splice(i,1);renderCart();}
 function toggleCart(){document.getElementById('cartSidebar').classList.toggle('open');}
 function openCart(){document.getElementById('cartSidebar').classList.add('open');}
+
+let lightboxPhotos = [];
+let lightboxIndex = 0;
+
+function openLightboxArgs(args) { openLightbox(args[0], args[1], args[2]); }
+
+function openLightbox(photos, index, name) {
+  lightboxPhotos = photos;
+  lightboxIndex = index || 0;
+  renderLightbox(name);
+  document.getElementById('lightboxOverlay').classList.add('open');
+}
+
+function renderLightbox(name) {
+  document.getElementById('lightboxImg').src = lightboxPhotos[lightboxIndex];
+  document.getElementById('lightboxImg').alt = name || '';
+  const multi = lightboxPhotos.length > 1;
+  document.getElementById('lightboxPrev').style.display = multi ? 'flex' : 'none';
+  document.getElementById('lightboxNext').style.display = multi ? 'flex' : 'none';
+  const dots = document.getElementById('lightboxDots');
+  dots.innerHTML = multi ? lightboxPhotos.map((_,i)=>`<button class="lightbox-dot ${i===lightboxIndex?'active':''}" onclick="event.stopPropagation();lightboxGoTo(${i})"></button>`).join('') : '';
+}
+
+function lightboxNav(dir) {
+  lightboxIndex = (lightboxIndex + dir + lightboxPhotos.length) % lightboxPhotos.length;
+  renderLightbox(document.getElementById('lightboxImg').alt);
+}
+function lightboxGoTo(i) {
+  lightboxIndex = i;
+  renderLightbox(document.getElementById('lightboxImg').alt);
+}
+function closeLightbox() { document.getElementById('lightboxOverlay').classList.remove('open'); }
+document.addEventListener('keydown', function(e) {
+  if (!document.getElementById('lightboxOverlay').classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') lightboxNav(-1);
+  if (e.key === 'ArrowRight') lightboxNav(1);
+});
 
 function checkoutWA(){
   if(!cart.length)return;
