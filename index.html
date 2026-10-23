@@ -432,8 +432,8 @@ const PRODUCTS = [
   {id:76,name:'Mini Rollitos',cat:'guayaba',emoji:'🍬',images:['web mini rollitos.png','web-Mini Rollitos.png'],price:90},
   {id:36,name:'Caja Mix',cat:'guayaba',emoji:'📦',img:'web-cajamix.png',desc:"<b>Incluye:</b> rollo de guayaba relleno de cajeta y nuez (130 gr), rollo de guayaba relleno de pulpa de tamarindo y arándanos (130 gr) y 60 gr de garapiñado a elegir.",options:[{"label": "Con nuez garapiñada", "price": 170}, {"label": "Con cacahuate garapiñado", "price": 160}],price:170},
   // Garapiñados
-  {id:85,name:'Tortugas 6pz',cat:'garapinados',emoji:'🐢',img:'Tortugas.png',desc:"<b>Incluye:</b> 6 tortugas de nuez con chocolate, chocolate blanco y caramelo.",price:140},
-  {id:86,name:'Tortugas 10pz',cat:'garapinados',emoji:'🐢',img:'Tortugas.png',desc:"<b>Incluye:</b> 10 tortugas de nuez con chocolate, chocolate blanco y caramelo.",price:230},
+  {id:85,name:'Tortugas 6pz',cat:'garapinados',emoji:'🐢',img:'Tortugas.png',desc:"<b>Incluye:</b> 6 tortugas de nuez con chocolate, chocolate blanco y caramelo.",price:160},
+  {id:86,name:'Tortugas 10pz',cat:'garapinados',emoji:'🐢',img:'Tortugas.png',desc:"<b>Incluye:</b> 10 tortugas de nuez con chocolate, chocolate blanco y caramelo.",price:260},
   {id:37,name:'Cacahuate Garapiñado 50gr',cat:'garapinados',emoji:'🥜',img:'Cacahuate_Garapi.png',price:35},
   {id:38,name:'Nuez Garapiñada 50gr',cat:'garapinados',emoji:'🥜',img:'Nuez_Garapi.png',price:50},
   {id:39,name:'Nuez Natural',cat:'garapinados',emoji:'🥜',price:190},
@@ -458,6 +458,7 @@ const PRODUCTS = [
   {id:78,name:'Empanada de Cajeta',cat:'reposteria',emoji:'🥐',img:'Empanadas_Surtidas.png',price:20},
   {id:79,name:'Empanada de Piña',cat:'reposteria',emoji:'🥐',img:'Empanadas_VARIAS.png',price:20},
   {id:80,name:'Empanada de Guayaba',cat:'reposteria',emoji:'🥐',price:20},
+  {id:95,name:'Coyota - Rellena de Cajeta y Nuez',cat:'reposteria',emoji:'🥐',price:40},
   {id:81,name:'Bolsa Empanadas Chicas - Cajeta',cat:'reposteria',emoji:'🛍️',img:'Bolsa_Empanadas_Cajeta.png',price:60},
   {id:82,name:'Bolsa Empanadas Chicas - Piña',cat:'reposteria',emoji:'🛍️',img:'Bolsa_Empanadas_Piña.png',price:60},
   {id:83,name:'Bolsa Empanadas Chicas - Guayaba',cat:'reposteria',emoji:'🛍️',img:'Bolsa_Empanadas_Guayaba.png',price:60},
@@ -472,7 +473,7 @@ const PRODUCTS = [
   {id:59,name:'Caja Obleas 4cms 5x5',cat:'eventos',subcat:'obleas_eventos',emoji:'📦',img:'CajaCubo.png',price:60},
   {id:60,name:'Caja de Obleas con Nutella',cat:'eventos',subcat:'obleas_eventos',emoji:'📦',price:95},
   {id:61,name:'Cilindro 7 Obleas',cat:'eventos',subcat:'obleas_eventos',emoji:'🎁',img:'Cilindro_Chico.png',price:60},
-  {id:62,name:'Cilindro 13 Obleas',cat:'eventos',subcat:'obleas_eventos',emoji:'🎁',img:'CilindroGrande.png',price:85},
+  {id:62,name:'Cilindro 13 Obleas',cat:'eventos',subcat:'obleas_eventos',emoji:'🎁',img:'CilindroGrande.png',price:90},
   {id:63,name:'Cruz 120 Obleas',cat:'eventos',subcat:'obleas_eventos',emoji:'✝️',price:95},
   {id:64,name:'Cruz Confetti',cat:'eventos',emoji:'✝️',img:'web cruz confetti.png',price:95},
   {id:91,name:'Cruz Salada',cat:'eventos',emoji:'✝️',img:'Cruz_Enchilada.png',price:110},
@@ -506,6 +507,10 @@ const PRODUCTS = [
   {id:219,name:"Charola Chica",cat:"navidad",emoji:"🎄",img:"NAVIDAD - CHAROLA CHICA.png",desc:"Charola circular de cuatro divisiones con listón navideño.<br><b>Incluye:</b> obleas en cuadritos de colores, dulces enchilados y tamarindo.",price:150},
   {id:220,name:"Charola Grande",cat:"navidad",emoji:"🎄",img:"NAVIDAD- CHAROLA GRANDE.png",desc:"Charola circular grande de seis divisiones con listón navideño.<br><b>Incluye:</b> obleas en cuadritos de colores, dulces de tamarindo y dulces enchilados.",price:280},
   {id:221,name:'Carta de Oblea Navideña',cat:'navidad',emoji:'🎄',images:['NAVIDAD -CARTA OBLEA.png','NAVIDAD SOBRE OBLEA 5.png'],desc:'Carta de oblea con diseño navideño impreso, presentada en sobre con sello dorado. Elige tu relleno.',options:[{"label":"Relleno de tamarindo","price":80},{"label":"Relleno de cajeta","price":80},{"label":"Relleno de Nutella","price":80}],price:80},
+  {id:222,name:'Caja Merry Christmas',cat:'navidad',emoji:'🎄',img:'NAVIDAD - CAJA MERRY XMAS MIEL.png',desc:'Caja de regalo navideña con moño.<br><b>Incluye:</b> miel de abeja, nuez garapiñada (50 gr), paleta de oblea con tamarindo de 8 cm y 2 mini rollitos (1 guayarindo y 1 de cajeta y nuez).',price:320},
+  {id:223,name:'Esfera Navideña',cat:'navidad',emoji:'🎄',img:'NAVIDAD - ESFERAS.png',desc:'Esfera transparente con moño navideño y diseño decorativo.<br><b>Incluye:</b> obleas rellenas de tamarindo. Diseño a elegir (puede ser cualquier diseño).',price:65},
+  {id:224,name:'Paleta de Oblea 8 cm',cat:'navidad',emoji:'🎄',img:'NAVIDAD - PALETAS 8CM Y 10.png',desc:'Paleta de oblea de 8 cm con moño navideño. Diseño a elegir (puede ser cualquier diseño).',price:40},
+  {id:225,name:'Paleta de Oblea 10 cm',cat:'navidad',emoji:'🎄',img:'NAVIDAD - PALETAS 8CM Y 10.png',desc:'Paleta de oblea de 10 cm con moño navideño. Diseño a elegir (puede ser cualquier diseño).',price:50},
 ];
 
 let cart = [];
