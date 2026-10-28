@@ -3,6 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="IMAR · Fábrica de Obleas y Dulces Artesanales en Monterrey. Obleas, rollos de guayaba, confetti, garapiñados, enchilados y catálogo navideño. Pedidos por WhatsApp.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IMAR">
+  <meta property="og:title" content="IMAR · Obleas y Dulces Artesanales">
+  <meta property="og:description" content="Obleas, rollos de guayaba y dulces artesanales hechos en Monterrey. Mira el catálogo y haz tu pedido por WhatsApp.">
+  <meta property="og:image" content="https://obleasimar.com/og-imar.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:url" content="https://obleasimar.com/">
+  <meta name="twitter:card" content="summary_large_image">
   <title>IMAR · Obleas y Dulces Artesanales</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <style>
@@ -428,7 +438,7 @@ const PRODUCTS = [
   {id:31,name:'Rollo de Guayaba Grande',cat:'guayaba',emoji:'🍬',img:'web rollo de guayaba mediano.png',desc:"Rollo de guayaba súper relleno de cajeta y nuez.<br><b>Peso:</b> 1 kg",price:500},
   {id:73,name:'Guayarindo',cat:'guayaba',emoji:'🍬',img:'web guayarindo.png',desc:"Rollo de guayaba relleno de pulpa de tamarindo y arándanos.<br><b>Peso:</b> 420 gr",price:200},
   {id:74,name:'Corazones Guayaba',cat:'guayaba',emoji:'❤️',img:'Corazones_Guayaba.png',price:65},
-  {id:75,name:'Mega Mix',cat:'guayaba',emoji:'🥜',images:['web-megamix.png','web megamix2.png'],desc:"<b>Incluye:</b> rollo de guayaba relleno de cajeta y nuez (330 gr), rollo de guayaba relleno de pulpa de tamarindo y arándanos (330 gr) y 60 gr de garapiñado a elegir.",options:[{"label": "Con nuez garapiñada", "price": 350}, {"label": "Con cacahuate garapiñado", "price": 340}],price:350},
+  {id:75,name:'Mega Mix',cat:'guayaba',emoji:'🥜',images:['web-megamix.png','web megamix2%3F.png'],desc:"<b>Incluye:</b> rollo de guayaba relleno de cajeta y nuez (330 gr), rollo de guayaba relleno de pulpa de tamarindo y arándanos (330 gr) y 60 gr de garapiñado a elegir.",options:[{"label": "Con nuez garapiñada", "price": 350}, {"label": "Con cacahuate garapiñado", "price": 340}],price:350},
   {id:76,name:'Mini Rollitos',cat:'guayaba',emoji:'🍬',images:['web mini rollitos.png','web-Mini Rollitos.png'],price:90},
   {id:36,name:'Caja Mix',cat:'guayaba',emoji:'📦',img:'web-cajamix.png',desc:"<b>Incluye:</b> rollo de guayaba relleno de cajeta y nuez (130 gr), rollo de guayaba relleno de pulpa de tamarindo y arándanos (130 gr) y 60 gr de garapiñado a elegir.",options:[{"label": "Con nuez garapiñada", "price": 170}, {"label": "Con cacahuate garapiñado", "price": 160}],price:170},
   // Garapiñados
@@ -460,7 +470,7 @@ const PRODUCTS = [
   {id:80,name:'Empanada de Guayaba',cat:'reposteria',emoji:'🥐',price:20},
   {id:95,name:'Coyota - Rellena de Cajeta y Nuez',cat:'reposteria',emoji:'🥐',price:40},
   {id:81,name:'Bolsa Empanadas Chicas - Cajeta',cat:'reposteria',emoji:'🛍️',img:'Bolsa_Empanadas_Cajeta.png',price:60},
-  {id:82,name:'Bolsa Empanadas Chicas - Piña',cat:'reposteria',emoji:'🛍️',img:'Bolsa_Empanadas_Piña.png',price:60},
+  {id:82,name:'Bolsa Empanadas Chicas - Piña',cat:'reposteria',emoji:'🛍️',img:'Bolsa_Empanadas_Piña.png',price:60},
   {id:83,name:'Bolsa Empanadas Chicas - Guayaba',cat:'reposteria',emoji:'🛍️',img:'Bolsa_Empanadas_Guayaba.png',price:60},
   {id:84,name:'Bolsa de Hojarascas',cat:'reposteria',emoji:'🛍️',img:'Hojarazcas.png',price:60},
   {id:72,name:'Bolsa Confetti 50g',cat:'obleas',subcat:'obleas_eventos',emoji:'🎊',price:50,hasColor:true},
@@ -555,7 +565,7 @@ function getPhotos(p) {
   return [];
 }
 
-function thumbSrc(p){return 'thumbs/'+encodeURI(p.replace(/\.(png|jpe?g)$/i,'')) + '.jpg';}
+function thumbSrc(p){return ''+encodeURI(p.replace(/\.(png|jpe?g)$/i,'')).replace(/%253F/g,'%3F') + '.jpg';}
 function thumbImg(p,alt,style){return `<img src="${thumbSrc(p)}" alt="${alt}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${p.replace(/'/g,"\\'")}'" style="${style}">`;}
 function cardHTML(p) {
     const photos = getPhotos(p);
