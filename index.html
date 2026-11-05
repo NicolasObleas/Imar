@@ -80,6 +80,13 @@
     .filter-btn { padding: 8px 20px; border-radius: 20px; border: 1.5px solid var(--azul); background: transparent; color: var(--azul); font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
     .filter-btn.active, .filter-btn:hover { background: var(--azul); color: var(--blanco); }
 
+
+    .toolbar { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; align-items:center; margin:-14px auto 28px; max-width:860px; }
+    .toolbar input, .toolbar select { font:inherit; font-size:.88rem; padding:10px 14px; border:1.5px solid #d9dde3; border-radius:12px; background:#fff; color:var(--azul); min-width:0; }
+    .toolbar input { flex:1 1 240px; }
+    .toolbar select { flex:0 1 190px; cursor:pointer; }
+    .toolbar input:focus, .toolbar select:focus { outline:none; border-color:var(--azul); }
+    .no-results { grid-column:1/-1; text-align:center; color:var(--gris); padding:40px 10px; }
     .subfilters { display: none; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: -28px; margin-bottom: 32px; }
     .subfilters.visible { display: flex; animation: fadeIn 0.2s ease; }
     .subfil-btn { padding: 6px 16px; border-radius: 16px; border: 1.5px solid var(--teal); background: transparent; color: var(--teal); font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
@@ -93,7 +100,7 @@
     .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 20px; }
     .product-card { background: var(--blanco); border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; }
     .product-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
-    .product-img { width: 100%; height: 160px; background: var(--gris-claro); display: flex; align-items: center; justify-content: center; font-size: 2.8rem; }
+    .product-img { width: 100%; aspect-ratio: 1 / 1; height: auto; background: var(--gris-claro); display: flex; align-items: center; justify-content: center; font-size: 2.8rem; }
     .product-body { padding: 14px; flex: 1; display: flex; flex-direction: column; }
     .product-category { font-size: 0.65rem; color: var(--teal); font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 5px; }
     .navidad-section { background: linear-gradient(180deg,#fff5f5 0%,#f2fbf5 100%); border-top: 4px solid #c0392b; border-bottom: 4px solid #1e7a46; }
@@ -248,6 +255,22 @@
     <h2 class="section-title">Catálogo IMAR</h2>
     <p class="section-sub">Todos nuestros productos elaborados artesanalmente en Monterrey.</p>
   </div>
+  <div class="toolbar">
+    <input type="search" id="searchBox" placeholder="🔍 Buscar producto (ej. rollo, chamoy, oblea)" oninput="onSearch(this.value)" aria-label="Buscar producto">
+    <select id="sortSel" onchange="onSort(this.value)" aria-label="Ordenar">
+      <option value="def">Ordenar: destacados</option>
+      <option value="asc">Precio: menor a mayor</option>
+      <option value="desc">Precio: mayor a menor</option>
+      <option value="az">Nombre: A–Z</option>
+    </select>
+    <select id="priceSel" onchange="onPrice(this.value)" aria-label="Filtrar por precio">
+      <option value="">Todos los precios</option>
+      <option value="0-50">Hasta $50</option>
+      <option value="50-150">$50 – $150</option>
+      <option value="150-300">$150 – $300</option>
+      <option value="300-99999">Más de $300</option>
+    </select>
+  </div>
   <div class="filters" id="categoryFilters">
     <button class="filter-btn active" onclick="filterProducts('all', this)">Todos</button>
     <button class="filter-btn" onclick="filterProducts('obleas', this)">Obleas</button>
@@ -324,7 +347,7 @@
       <h4>Contacto</h4>
       <a href="https://wa.me/528112445443" target="_blank">💬 WhatsApp IMAR</a>
       <a href="https://wa.me/528111839186" target="_blank">💬 WhatsApp Ventas</a>
-      <a href="mailto:hola@imarobleas.com">✉️ hola@imarobleas.com</a>
+      <a href="mailto:obleasim@gmail.com">✉️ obleasim@gmail.com</a>
       <a href="#">📍 Monterrey, NL</a>
     </div>
   </div>
@@ -415,24 +438,25 @@ const PRODUCTS = [
   {id:12,name:'Oblea 10 cm Impresa',cat:'obleas',subcat:'obleas_impresa',emoji:'🖨️',img:'Oblea10cm_TULOGO.png',price:16,hasColor:true},
   {id:88,name:'Tarjeta de Oblea 12x19',cat:'obleas',subcat:'obleas_impresa',emoji:'🖨️',img:'Tarjeta_Oblea.png',price:80},
   // Obleas — Rellena
-  {id:14,name:'Oblea 4 cm Rellena',cat:'obleas',subcat:'obleas_rellena',emoji:'🍬',price:8,hasColor:true},
-  {id:15,name:'Oblea 5 cm Rellena',cat:'obleas',subcat:'obleas_rellena',emoji:'🍬',price:9,hasColor:true},
-  {id:16,name:'Oblea 10 cm Rellena',cat:'obleas',subcat:'obleas_rellena',emoji:'🍬',price:19,hasColor:true},
-  {id:17,name:'Oblea 21 cm Rellena',cat:'obleas',subcat:'obleas_rellena',emoji:'🍬',price:60,hasColor:true},
+  {id:14,name:'Oblea 4 cm Rellena',cat:'obleas',subcat:'obleas_rellena',emoji:'🍬',img:'oblea rellena 4 cm.png',price:8,hasColor:true},
+  {id:15,name:'Oblea 5 cm Rellena',cat:'obleas',subcat:'obleas_rellena',emoji:'🍬',img:'oblea rellena 5 cm.png',price:9,hasColor:true},
+  {id:96,name:'Oblea 8 cm Rellena',cat:'obleas',subcat:'obleas_rellena',emoji:'🍬',img:'oblea rellena 8 cm.png',price:17,hasColor:true},
+  {id:16,name:'Oblea 10 cm Rellena',cat:'obleas',subcat:'obleas_rellena',emoji:'🍬',img:'oblea rellena 10 cm.png',price:19,hasColor:true},
+  {id:17,name:'Oblea 21 cm Rellena',cat:'obleas',subcat:'obleas_rellena',emoji:'🍬',img:'oblea rellena 21 cm.png',price:60,hasColor:true},
   // Obleas — Impresa + Rellena
   {id:33,name:'Oblea 8 cm Impresa+Rellena',cat:'obleas',subcat:'obleas_impresa_rellena',emoji:'🖨️🍬',img:'Oblea8cm_Impresa.png',price:40,hasColor:true},
   {id:34,name:'Oblea 10 cm Impresa+Rellena',cat:'obleas',subcat:'obleas_impresa_rellena',emoji:'🖨️🍬',img:'Oblea10cm_TULOGO.png',price:50,hasColor:true},
   {id:35,name:'Oblea 21 cm Impresa+Rellena',cat:'obleas',subcat:'obleas_impresa_rellena',emoji:'🖨️🍬',img:'Oblea21cm_ImpresayRellena.png',price:85,hasColor:true},
   // Obleas — otros
   {id:20,name:'Confetti Oblea 500g MIX — Tamarindo',cat:'obleas',subcat:'obleas_rellena',emoji:'🎊',img:'Confetti_MedioKG.png',price:210},
-  {id:21,name:'Confetti de Oblea KG 1 COLOR — Tamarindo',cat:'obleas',subcat:'obleas_rellena',emoji:'🎊',price:390,hasColor:true,rellenoFijo:'Tamarindo'},
+  {id:21,name:'Confetti de Oblea KG 1 COLOR — Tamarindo',cat:'obleas',subcat:'obleas_rellena',emoji:'🎊',img:'confetti oblea kg 1 color.png',price:390,hasColor:true,rellenoFijo:'Tamarindo'},
   {id:22,name:'Confetti de Oblea KG MIX — Tamarindo',cat:'obleas',subcat:'obleas_rellena',emoji:'🎊',img:'Confetti_KG.png',price:370},
   {id:23,name:'Barritas de Oblea',cat:'obleas',subcat:'obleas_natural',emoji:'🍫',img:'Barritas_Oblea.png',price:70},
   {id:25,name:'Recorte Oblea',cat:'obleas',subcat:'obleas_natural',emoji:'✂️',img:'Recorte_Oblea.png',price:10},
   // Rollo de Guayaba
   {id:26,name:'Mini Rollito de Guayaba',cat:'guayaba',emoji:'🍬',img:'web mini rollitos.png',price:50},
-  {id:27,name:'Rollito de Guayaba 130gr',cat:'guayaba',emoji:'🍬',desc:"Rollo de guayaba relleno de cajeta y nuez.<br><b>Peso:</b> 130 gr",price:95},
-  {id:28,name:'Rollito Guayarindo 130gr',cat:'guayaba',emoji:'🍬',desc:"Rollo de guayaba relleno de pulpa de tamarindo y arándanos.<br><b>Peso:</b> 130 gr",price:90},
+  {id:27,name:'Rollito de Guayaba 130gr',cat:'guayaba',emoji:'🍬',img:'rollito guayaba 130gr.png',desc:"Rollo de guayaba relleno de cajeta y nuez.<br><b>Peso:</b> 130 gr",price:95},
+  {id:28,name:'Rollito Guayarindo 130gr',cat:'guayaba',emoji:'🍬',img:'rollito guayarindo 130gr.png',desc:"Rollo de guayaba relleno de pulpa de tamarindo y arándanos.<br><b>Peso:</b> 130 gr",price:90},
   {id:90,name:'Rollo de Guayaba Chico',cat:'guayaba',emoji:'🍬',images:['RolloGuayabaChico.png','web rollo de guayaba chico.png','web rollo de guayaba chico y mediano.png'],desc:"Rollo de guayaba súper relleno de cajeta y nuez.<br><b>Peso:</b> 250 gr",price:160},
   {id:30,name:'Rollo de Guayaba Mediano',cat:'guayaba',emoji:'🍬',images:['web-Rollo Med.png','web rollo de guayaba chico y mediano.png'],desc:"Rollo de guayaba súper relleno de cajeta y nuez.<br><b>Peso:</b> 500 gr",price:260},
   {id:31,name:'Rollo de Guayaba Grande',cat:'guayaba',emoji:'🍬',img:'web rollo de guayaba mediano.png',desc:"Rollo de guayaba súper relleno de cajeta y nuez.<br><b>Peso:</b> 1 kg",price:500},
@@ -446,6 +470,10 @@ const PRODUCTS = [
   {id:86,name:'Tortugas 10pz',cat:'garapinados',emoji:'🐢',img:'Tortugas.png',desc:"<b>Incluye:</b> 10 tortugas de nuez con chocolate, chocolate blanco y caramelo.",price:260},
   {id:37,name:'Cacahuate Garapiñado 50gr',cat:'garapinados',emoji:'🥜',img:'Cacahuate_Garapi.png',price:35},
   {id:38,name:'Nuez Garapiñada 50gr',cat:'garapinados',emoji:'🥜',img:'Nuez_Garapi.png',price:50},
+  {id:230,name:'Caja Nuez Garapiñada 150gr',cat:'navidad',emoji:'🎄',img:'caja nuez garapi 150gr.png',desc:'Caja transparente con moño.<br><b>Peso:</b> 150 gr',price:120},
+  {id:231,name:'Caja Nuez Garapiñada 250gr',cat:'navidad',emoji:'🎄',img:'caja nuez 250gr.png',desc:'Caja transparente con moño.<br><b>Peso:</b> 250 gr',price:160},
+  {id:232,name:'Caja Cacahuate Garapiñado 150gr',cat:'navidad',emoji:'🎄',img:'caja cacahuate garapi 150gr.png',desc:'Caja transparente con moño.<br><b>Peso:</b> 150 gr',price:90},
+  {id:233,name:'Caja Cacahuate Garapiñado 250gr',cat:'navidad',emoji:'🎄',img:'caja cacahuate garapi 250gr.png',desc:'Caja transparente con moño.<br><b>Peso:</b> 250 gr',price:120},
   {id:39,name:'Nuez Natural',cat:'garapinados',emoji:'🥜',price:190},
   {id:40,name:'Miel de Abeja',cat:'garapinados',emoji:'🍯',img:'Miel_Abeja.png',price:90},
   // Enchilados
@@ -466,14 +494,14 @@ const PRODUCTS = [
   // Repostería
   {id:77,name:'Empanada Super Rellena de Cajeta y Nuez',cat:'reposteria',emoji:'🥐',img:'Empanada_SuperRellena.png',price:20},
   {id:78,name:'Empanada de Cajeta',cat:'reposteria',emoji:'🥐',img:'Empanadas_Surtidas.png',price:20},
-  {id:79,name:'Empanada de Piña',cat:'reposteria',emoji:'🥐',img:'Empanadas_VARIAS.png',price:20},
-  {id:80,name:'Empanada de Guayaba',cat:'reposteria',emoji:'🥐',price:20},
-  {id:95,name:'Coyota - Rellena de Cajeta y Nuez',cat:'reposteria',emoji:'🥐',price:40},
+  {id:79,name:'Empanada de Piña',cat:'reposteria',emoji:'🥐',img:'empanada pina.png',price:20},
+  {id:80,name:'Empanada de Guayaba',cat:'reposteria',emoji:'🥐',img:'empanada guayaba.png',price:20},
+  {id:95,name:'Coyota - Rellena de Cajeta y Nuez',cat:'reposteria',emoji:'🥐',img:'coyota.png',price:40},
   {id:81,name:'Bolsa Empanadas Chicas - Cajeta',cat:'reposteria',emoji:'🛍️',img:'Bolsa_Empanadas_Cajeta.png',price:60},
   {id:82,name:'Bolsa Empanadas Chicas - Piña',cat:'reposteria',emoji:'🛍️',img:'Bolsa_Empanadas_Piña.png',price:60},
   {id:83,name:'Bolsa Empanadas Chicas - Guayaba',cat:'reposteria',emoji:'🛍️',img:'Bolsa_Empanadas_Guayaba.png',price:60},
   {id:84,name:'Bolsa de Hojarascas',cat:'reposteria',emoji:'🛍️',img:'Hojarazcas.png',price:60},
-  {id:72,name:'Bolsa Confetti 50g',cat:'obleas',subcat:'obleas_eventos',emoji:'🎊',price:50,hasColor:true},
+  {id:72,name:'Bolsa Confetti 50g',cat:'obleas',subcat:'obleas_eventos',emoji:'🎊',img:'bolsa confettii.png',price:50,hasColor:true},
   // Eventos
   {id:54,name:'Angel Oblea',cat:'eventos',subcat:'obleas_eventos',emoji:'👼',img:'Angel_Oblea.png',price:55},
   {id:55,name:'Bolsa Obleas y Sobre Nutella',cat:'eventos',subcat:'obleas_eventos',emoji:'🍫',img:'Bolsa_Obleas_Nutella.png',price:70},
@@ -513,7 +541,7 @@ const PRODUCTS = [
   {id:215,name:"Caja Cubo Obleas 4 cm",cat:"navidad",emoji:"🎄",img:"NAVIDAD - CAJA CUBO OBLEAS 4CM .png",desc:"<b>Incluye:</b> obleas de colores de 4 cm en cubo transparente, con moño y etiqueta navideña (listón verde o rojo).",price:65},
   {id:216,name:"Caja Obleas y Guayarindo",cat:"navidad",emoji:"🎄",img:"NAVIDAD - CAJA OBLEAS Y GUAYARINDO.png",desc:"<b>Incluye:</b> obleas de colores y rollo guayarindo en caja transparente, con etiqueta navideña.",price:90},
   {id:217,name:"Caja Pino",cat:"navidad",emoji:"🎄",img:"NAVIDAD - CAJA PINO.png",desc:"Caja transparente en forma de árbol de Navidad.<br><b>Incluye:</b> obleas en cuadritos de colores.",price:95},
-  {id:218,name:"Caja Grande Merry Christmas",cat:"navidad",emoji:"🎄",img:"NAVIDAD - CAJA GRANDE.png",desc:"Caja transparente surtida.<br><b>Incluye:</b> obleas en cuadritos de colores, rollo guayarindo, tarro de pulpa de tamarindo y dulces enchilados.",price:270},
+  {id:218,name:"Mix Enchilado",cat:"navidad",emoji:"🎄",img:"NAVIDAD - CAJA GRANDE.png",desc:"Caja transparente surtida.<br><b>Incluye:</b> obleas en cuadritos de colores, rollo guayarindo, tarro de pulpa de tamarindo y dulces enchilados.",price:270},
   {id:219,name:"Charola Chica",cat:"navidad",emoji:"🎄",img:"NAVIDAD - CHAROLA CHICA.png",desc:"Charola circular de cuatro divisiones con listón navideño.<br><b>Incluye:</b> obleas en cuadritos de colores, dulces enchilados y tamarindo.",price:150},
   {id:220,name:"Charola Grande",cat:"navidad",emoji:"🎄",img:"NAVIDAD- CHAROLA GRANDE.png",desc:"Charola circular grande de seis divisiones con listón navideño.<br><b>Incluye:</b> obleas en cuadritos de colores, dulces de tamarindo y dulces enchilados.",price:280},
   {id:221,name:'Carta de Oblea Navideña',cat:'navidad',emoji:'🎄',images:['NAVIDAD -CARTA OBLEA.png','NAVIDAD SOBRE OBLEA 5.png'],desc:'Carta de oblea con diseño navideño impreso, presentada en sobre con sello dorado. Elige tu relleno.',options:[{"label":"Relleno de tamarindo","price":80},{"label":"Relleno de cajeta","price":80},{"label":"Relleno de Nutella","price":80}],price:80},
@@ -524,6 +552,7 @@ const PRODUCTS = [
   {id:226,name:'Cilindro Navideño',cat:'navidad',emoji:'🎄',img:'NAVIDAD-CILINDRO .png',desc:'Cilindro de obleas con diseño navideño.',price:90},
   {id:227,name:'Bolsa de Confetti',cat:'navidad',emoji:'🎄',img:'NAVIDAD - BOLSA CONFETTI.png',desc:'Bolsa con cuadritos de oblea rellenos de tamarindo.',price:50},
   {id:228,name:'Caja 7 Obleas Rellenas + Pulpa de Tamarindo',cat:'navidad',emoji:'🎄',img:'IMAR_caja_obleas_tamarindo_web.png',desc:'Caja transparente con moño navideño.<br><b>Incluye:</b> 7 obleas rellenas de tamarindo y pulpa de tamarindo.',price:90},
+  {id:229,name:'Caja Merry Christmas Enchilado',cat:'navidad',emoji:'🎄',img:'caja merry christmas enchilado.png',desc:'Caja de regalo navideña con moño.<br><b>Incluye:</b> chamoy, bolsa de obleas en cuadritos, rollito de guayaba enchilado y paleta de oblea.',price:320},
 ];
 
 let cart = [];
@@ -574,7 +603,7 @@ function cardHTML(p) {
     const argsAttr = JSON.stringify([photos, 0, p.name]).replace(/"/g,'&quot;');
     return `
     <div class="product-card">
-      <div class="product-img ${photos.length ? 'has-photo' : ''}" ${photos.length ? `onclick="openLightboxArgs(${argsAttr})"` : ''}>${photos.length ? `${thumbImg(photos[0],p.name,'width:100%;height:100%;object-fit:cover;')}${photos.length>1?`<div class="photo-count">📷 ${photos.length}</div>`:''}` : p.emoji}</div>
+      <div class="product-img ${photos.length ? 'has-photo' : ''}" ${photos.length ? `onclick="openLightboxArgs(${argsAttr})"` : ''}>${photos.length ? `${thumbImg(photos[0],p.name,'width:100%;height:100%;object-fit:contain;')}${photos.length>1?`<div class="photo-count">📷 ${photos.length}</div>`:''}` : p.emoji}</div>
       <div class="product-body">
         <div class="product-category">${catLabel(p.cat)}</div>
         <h3 class="product-name">${p.name}</h3>
@@ -592,17 +621,41 @@ function cardHTML(p) {
       </div>
     </div>`;}
 
-function renderProducts(filter='all', subcat=null) {
+const VIEW={cat:'all',sub:null,q:'',sort:'def',price:''};
+const norm=t=>(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+const hasPhoto=p=>!!(p.img||(p.images&&p.images.length));
+function applyView(list){
+  if(VIEW.price){const [a,b]=VIEW.price.split('-').map(Number);list=list.filter(p=>p.price!=null&&p.price>=a&&p.price<=b);}
+  const idx=new Map(PRODUCTS.map((p,i)=>[p,i]));
+  const pr=(p,d)=>p.price==null?(d?-1:Infinity):p.price;
+  if(VIEW.sort==='asc') list=[...list].sort((x,y)=>pr(x)-pr(y)||idx.get(x)-idx.get(y));
+  else if(VIEW.sort==='desc') list=[...list].sort((x,y)=>(y.price==null?-1:y.price)-(x.price==null?-1:x.price)||idx.get(x)-idx.get(y));
+  else if(VIEW.sort==='az') list=[...list].sort((x,y)=>norm(x.name).localeCompare(norm(y.name)));
+  else list=[...list].sort((x,y)=>(hasPhoto(y)-hasPhoto(x))||idx.get(x)-idx.get(y));
+  return list;
+}
+function renderProducts(filter=VIEW.cat, subcat=VIEW.sub) {
+  VIEW.cat=filter; VIEW.sub=subcat;
   const g = document.getElementById('productGrid');
   let list;
-  if(filter==='all') list = PRODUCTS.filter(p=>p.cat!=='navidad');
+  if(VIEW.q){
+    const q=norm(VIEW.q).trim().split(/\s+/);
+    list=PRODUCTS.filter(p=>{const t=norm(p.name+' '+(p.desc||'').replace(/<[^>]*>/g,' '));return q.every(w=>t.includes(w));});
+  }
+  else if(filter==='all') list = PRODUCTS.filter(p=>p.cat!=='navidad');
   else if(subcat) list = PRODUCTS.filter(p=>p.subcat===subcat);
   else list = PRODUCTS.filter(p=>p.cat===filter);
-  g.innerHTML = list.map(cardHTML).join('');
+  list=applyView(list);
+  g.innerHTML = list.length ? list.map(cardHTML).join('') : '<p class="no-results">No encontramos productos con esa búsqueda o filtro. Prueba con otra palabra o escríbenos por WhatsApp 💬</p>';
+  const nv=document.getElementById('navidad'); if(nv&&PRODUCTS.some(p=>p.cat==='navidad')) nv.hidden=!!(VIEW.q||VIEW.price);
+  if(!VIEW.q&&!VIEW.price) renderNavidad();
 }
+function onSearch(v){VIEW.q=v;renderProducts();}
+function onSort(v){VIEW.sort=v;renderProducts();}
+function onPrice(v){VIEW.price=v;renderProducts();}
 
 function renderNavidad() {
-  const list = PRODUCTS.filter(p=>p.cat==='navidad');
+  const list = applyView(PRODUCTS.filter(p=>p.cat==='navidad'));
   if(!list.length) return;  // sin productos navideños la sección queda oculta
   document.getElementById('navidadGrid').innerHTML = list.map(cardHTML).join('');
   document.getElementById('navidad').hidden = false;
@@ -621,7 +674,7 @@ function filterProducts(cat,btn) {
     renderProducts('obleas','obleas_natural');
   } else {
     sub.classList.remove('visible');
-    renderProducts(cat);
+    renderProducts(cat,null);
   }
 }
 
